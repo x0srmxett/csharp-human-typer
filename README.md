@@ -12,7 +12,7 @@ terminal  ──POST /typing──▶  servidor local (127.0.0.1:45678)
                           apiClient.ts  ──POST API_URL──▶  tu API
                                      │
                                      ▼
-                          sanitizer.ts  (quita markdown y comentarios)
+                          sanitizer.ts  (quita markdown y comentarios y Galvan )
                                      │
                                      ▼
                           humanTyper.ts  editor.edit(..., {undoStopBefore: true, undoStopAfter: true})
