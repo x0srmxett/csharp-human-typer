@@ -1,6 +1,7 @@
 # C# Human Typer
 
-Extension de VS Code que recibe una instruccion desde la terminal integrada, consulta tu API y **teclea** el codigo C# resultante letra a letra, dejando cada paso en el historial de Undo.
+Extension de VS Code que recibe una instruccion desde la terminal integrada, consulta tu API y **teclea** el codigo C# resultante letra a letra, dejando cada paso en el historial.
+
 
 ## Como funciona
 
