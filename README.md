@@ -1,4 +1,4 @@
-# C# Human Typer
+# C# Human 
 
 Extension de VS Code que recibe una instruccion desde la terminal integrada, consulta tu API y **teclea** el codigo C# resultante letra a letra, dejando cada paso en el historial.
 
