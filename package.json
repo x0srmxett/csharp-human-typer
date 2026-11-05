@@ -1,0 +1,167 @@
+{
+  "name": "csharp-human-typer",
+  "displayName": "C# Human Typer",
+  "description": "Recibe instrucciones desde la terminal integrada, consulta tu API y escribe el codigo C# resultante de forma progresiva (con paradas de Undo reales).",
+  "version": "1.0.2",
+  "publisher": "local",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.85.0",
+    "node": ">=18"
+  },
+  "categories": [
+    "Other",
+    "Programming Languages"
+  ],
+  "activationEvents": [
+    "onStartupFinished",
+    "onTerminalProfile:csharp-human-typer.instructionTerminal"
+  ],
+  "main": "./out/extension.js",
+  "bin": {
+    "escribir": "./bin/escribir.js"
+  },
+  "contributes": {
+    "commands": [
+      {
+        "command": "csharp-human-typer.ask",
+        "title": "C# Human Typer: Pedir codigo por input box",
+        "category": "C# Human Typer"
+      },
+      {
+        "command": "csharp-human-typer.openTerminal",
+        "title": "C# Human Typer: Abrir terminal 'escribir'",
+        "category": "C# Human Typer"
+      },
+      {
+        "command": "csharp-human-typer.stopTyping",
+        "title": "C# Human Typer: Detener escritura",
+        "category": "C# Human Typer"
+      },
+      {
+        "command": "csharp-human-typer.showServerInfo",
+        "title": "C# Human Typer: Mostrar URL/Token del servidor local",
+        "category": "C# Human Typer"
+      }
+    ],
+    "terminal": {
+      "profiles": [
+        {
+          "id": "csharp-human-typer.instructionTerminal",
+          "title": "C# Human Typer (escribir)",
+          "icon": "terminal-cmd"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "C# Human Typer",
+      "properties": {
+        "csharpHumanTyper.apiUrl": {
+          "type": "string",
+          "default": "",
+          "markdownDescription": "URL del endpoint POST de tu API. Si esta vacia se usa la variable de entorno `API_URL`."
+        },
+        "csharpHumanTyper.apiKey": {
+          "type": "string",
+          "default": "",
+          "markdownDescription": "API key enviada como `Authorization: Bearer ...`. Si esta vacia se usa la variable de entorno `API_KEY`."
+        },
+        "csharpHumanTyper.apiModel": {
+          "type": "string",
+          "default": "",
+          "description": "Modelo opcional enviado en el cuerpo JSON."
+        },
+        "csharpHumanTyper.tlsRejectUnauthorized": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Verificar el certificado TLS de la API. Ponlo en `false` si tu red usa un proxy o antivirus que intercepta HTTPS con un certificado propio (error `self-signed certificate in certificate chain`)."
+        },
+        "csharpHumanTyper.requestTimeoutMs": {
+          "type": "number",
+          "default": 120000,
+          "minimum": 5000,
+          "description": "Tiempo maximo de espera de la API en milisegundos (un LLM puede tardar)."
+        },
+        "csharpHumanTyper.discreet": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Modo discreto: no muestra notificaciones ni barras de progreso, no roba el foco y escribe rapido. Toda la informacion va a la terminal integrada y al canal de salida."
+        },
+        "csharpHumanTyper.targetFile": {
+          "type": "string",
+          "default": "",
+          "markdownDescription": "Archivo destino fijo, relativo al workspace (por ejemplo `Program.cs`). Vacio = escribe en el editor activo."
+        },
+        "csharpHumanTyper.httpPort": {
+          "type": "number",
+          "default": 45678,
+          "description": "Puerto del servidor HTTP local que recibe las instrucciones de la terminal."
+        },
+        "csharpHumanTyper.serverToken": {
+          "type": "string",
+          "default": "",
+          "description": "Token local para autenticar el script 'escribir'. Si esta vacio se genera uno aleatorio al arrancar."
+        },
+        "csharpHumanTyper.systemPrompt": {
+          "type": "string",
+          "default": "",
+          "description": "Opcional: sobreescribe el System Prompt enviado a la API."
+        },
+        "csharpHumanTyper.typing.minDelayMs": {
+          "type": "number",
+          "default": 25,
+          "minimum": 0,
+          "description": "Retardo minimo por fragmento escrito (ms)."
+        },
+        "csharpHumanTyper.typing.maxDelayMs": {
+          "type": "number",
+          "default": 75,
+          "minimum": 1,
+          "description": "Retardo maximo por fragmento escrito (ms)."
+        },
+        "csharpHumanTyper.typing.maxChunkSize": {
+          "type": "number",
+          "default": 3,
+          "minimum": 1,
+          "description": "Numero maximo de caracteres por fragmento (1-3 recomendado)."
+        },
+        "csharpHumanTyper.typing.undoEvery": {
+          "type": "number",
+          "default": 1,
+          "minimum": 1,
+          "description": "Cada cuantos fragmentos se crea una parada de Undo independiente."
+        },
+        "csharpHumanTyper.typing.pauseAtNewlineMs": {
+          "type": "number",
+          "default": 180,
+          "minimum": 0,
+          "description": "Pausa extra tras escribir un salto de linea (ms)."
+        },
+        "csharpHumanTyper.typing.clearEditorBeforeTyping": {
+          "type": "boolean",
+          "default": false,
+          "description": "Si esta activo, vacia el editor activo antes de comenzar a escribir."
+        },
+        "csharpHumanTyper.typing.saveAfterTyping": {
+          "type": "boolean",
+          "default": false,
+          "description": "Guarda el archivo automaticamente al terminar de escribir."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -w -p ./",
+    "package": "vsce package"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "@types/vscode": "^1.85.0",
+    "typescript": "^5.5.0"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5"
+  }
+}

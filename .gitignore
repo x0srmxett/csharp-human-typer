@@ -1,0 +1,17 @@
+# Dependencias y compilado
+node_modules/
+out/
+*.vsix
+
+# Secretos: NUNCA subir claves
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+secrets.json
+
+# Logs y temporales
+*.log
+.DS_Store
+Thumbs.db
